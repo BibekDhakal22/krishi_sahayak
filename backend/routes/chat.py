@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app
-from google import genai
+from groq import Groq
 import jwt
 import os
 
@@ -28,20 +28,23 @@ def send_message():
         return jsonify({'error': 'Message is required'}), 400
 
     try:
-        client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
-        response = client.models.generate_content(
-            model='gemini-2.0-flash',
-            contents=message,
-            config=genai.types.GenerateContentConfig(
-                system_instruction="""You are Krishi Sahayak, an expert agricultural assistant for Nepal.
-                You help farmers with crop advice, pest control, fertilizer recommendations,
-                and farming best practices specific to Nepal's climate and geography.
-                Answer in simple language. If the user writes in Nepali, respond in Nepali.
-                Keep answers practical and actionable for small-scale Nepali farmers.""",
-                max_output_tokens=1024,
-            )
+        client = Groq(api_key=os.getenv('GROQ_API_KEY'))
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            max_tokens=1024,
+            messages=[
+                {
+                    "role": "system",
+                    "content": """You are Krishi Sahayak, an expert agricultural assistant for Nepal.
+                    You help farmers with crop advice, pest control, fertilizer recommendations,
+                    and farming best practices specific to Nepal's climate and geography.
+                    Answer in simple language. If the user writes in Nepali, respond in Nepali.
+                    Keep answers practical and actionable for small-scale Nepali farmers."""
+                },
+                {"role": "user", "content": message}
+            ]
         )
-        ai_response = response.text
+        ai_response = response.choices[0].message.content
 
         if user_id:
             cur = mysql.connection.cursor()
