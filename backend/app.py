@@ -25,8 +25,10 @@ from routes.pests import pests_bp
 from routes.chat import chat_bp
 from routes.weather import weather_bp
 from routes.admin import admin_bp
+from routes.recommend import recommend_bp
 
 
+app.register_blueprint(recommend_bp, url_prefix='/api/recommend')
 app.register_blueprint(admin_bp, url_prefix='/api/admin')
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(crops_bp, url_prefix='/api/crops')
