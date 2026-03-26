@@ -1,0 +1,25 @@
+.profile-page { padding: 0 0 40px; }
+.profile-hero { background: linear-gradient(135deg, #1b5e20, #388e3c); color: white; padding: 40px; display: flex; align-items: center; gap: 24px; }
+.profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; border: 3px solid rgba(255,255,255,0.4); }
+.profile-hero h2 { font-size: 1.8rem; margin-bottom: 8px; }
+.role-badge { padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+.role-badge.admin { background: rgba(255,143,0,0.3); color: #ffe0b2; }
+.role-badge.user { background: rgba(255,255,255,0.2); color: white; }
+.profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 30px 40px; }
+.profile-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+.profile-card h3 { color: #1b5e20; margin-bottom: 20px; font-size: 1.1rem; }
+.full-width { grid-column: 1 / -1; }
+.info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.95rem; }
+.info-row span { color: #666; }
+.status-active { color: #2e7d32; }
+.password-form { display: flex; flex-direction: column; gap: 12px; }
+.password-form input { padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; outline: none; }
+.password-form input:focus { border-color: #388e3c; }
+.password-form button { background: #1b5e20; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+.password-form button:disabled { background: #aaa; }
+.quick-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.quick-link { display: flex; flex-direction: column; align-items: center; gap: 8px; background: #f1f8e9; padding: 20px; border-radius: 12px; text-decoration: none; color: #1b5e20; width: 100px; text-align: center; transition: transform 0.2s; }
+.quick-link:hover { transform: translateY(-4px); }
+.quick-link span { font-size: 2rem; }
+.quick-link p { font-size: 0.8rem; font-weight: 600; margin: 0; }
+@media (max-width: 768px) { .profile-grid { grid-template-columns: 1fr; padding: 16px; } }

@@ -1,0 +1,35 @@
+.dashboard { padding: 0 0 40px 0; }
+.dash-hero { background: linear-gradient(135deg, #1b5e20, #388e3c); color: white; padding: 36px 40px; display: flex; justify-content: space-between; align-items: center; }
+.dash-hero h2 { font-size: 1.8rem; margin-bottom: 4px; }
+.dash-hero p { opacity: 0.85; }
+.admin-badge { background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; }
+.dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+.dash-stat { padding: 24px; text-align: center; border-right: 1px solid #f0f0f0; }
+.dash-stat:last-child { border-right: none; }
+.dash-stat span { font-size: 2rem; display: block; margin-bottom: 8px; }
+.dash-stat strong { font-size: 1.8rem; display: block; font-weight: 800; margin-bottom: 4px; }
+.dash-stat p { font-size: 0.8rem; color: #666; margin: 0; }
+.dash-stat.green strong { color: #2e7d32; }
+.dash-stat.orange strong { color: #e65100; }
+.dash-stat.blue strong { color: #1565c0; }
+.dash-stat.purple strong { color: #6a1b9a; }
+.dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 24px 40px; }
+.dash-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+.dash-card h3 { color: #1b5e20; margin-bottom: 16px; font-size: 1.1rem; }
+.quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.qa-btn { padding: 12px; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; text-align: center; transition: transform 0.15s; }
+.qa-btn:hover { transform: translateY(-2px); }
+.qa-btn.ai { background: #f3e5f5; color: #6a1b9a; }
+.qa-btn.rec { background: #e8f5e9; color: #2e7d32; }
+.qa-btn.weather { background: #e3f2fd; color: #1565c0; }
+.qa-btn.crops { background: #f1f8e9; color: #558b2f; }
+.qa-btn.pests { background: #fce4ec; color: #c62828; }
+.qa-btn.admin { background: #fff8e1; color: #f57f17; }
+.recent-chats { display: flex; flex-direction: column; gap: 12px; }
+.recent-chat-item { background: #f9fbe7; border-radius: 8px; padding: 12px; border-left: 3px solid #1b5e20; }
+.chat-q { font-size: 0.85rem; font-weight: 600; color: #333; margin-bottom: 4px; }
+.chat-a { font-size: 0.8rem; color: #666; margin: 0; }
+.view-all { display: block; text-align: center; color: #1b5e20; font-size: 0.85rem; font-weight: 600; margin-top: 8px; }
+.no-chats { text-align: center; padding: 20px; color: #666; }
+.no-chats a { color: #1b5e20; font-weight: 600; }
+@media (max-width: 768px) { .dash-stats { grid-template-columns: repeat(2, 1fr); } .dash-grid { grid-template-columns: 1fr; padding: 16px; } .quick-actions { grid-template-columns: 1fr; } }

@@ -1,0 +1,14 @@
+.footer { background: #0a3d0a; color: white; margin-top: auto; }
+.footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding: 50px 80px; }
+.footer-brand h3 { font-size: 1.4rem; margin-bottom: 8px; }
+.footer-brand p { font-size: 0.9rem; opacity: 0.7; margin-bottom: 4px; }
+.footer-brand .nepali { font-size: 0.8rem; opacity: 0.5; }
+.footer-links { display: flex; flex-direction: column; gap: 10px; }
+.footer-links h4 { color: #a5d6a7; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+.footer-links a:hover { color: white; }
+.footer-info h4 { color: #a5d6a7; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.footer-info p { font-size: 0.85rem; opacity: 0.7; margin-bottom: 4px; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 20px 80px; display: flex; justify-content: space-between; align-items: center; }
+.footer-bottom p { font-size: 0.8rem; opacity: 0.5; margin: 0; }
+@media (max-width: 768px) { .footer-content { grid-template-columns: 1fr 1fr; padding: 30px 20px; gap: 24px; } .footer-bottom { flex-direction: column; gap: 8px; padding: 16px 20px; text-align: center; } }
