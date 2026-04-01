@@ -1,0 +1,30 @@
+.soil-page { padding: 0 0 40px; }
+.soil-hero { background: linear-gradient(135deg, #3e2723, #5d4037); color: white; padding: 40px; text-align: center; }
+.soil-hero h2 { font-size: 2rem; margin-bottom: 8px; }
+.soil-hero p { opacity: 0.9; margin-bottom: 4px; }
+.nepali { font-size: 0.9rem; opacity: 0.7; }
+.soil-layout { display: grid; grid-template-columns: 340px 1fr; gap: 24px; padding: 30px 40px; align-items: start; }
+.soil-form-box { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 80px; }
+.soil-form-box h3 { color: #3e2723; margin-bottom: 20px; }
+.soil-form { display: flex; flex-direction: column; gap: 14px; }
+.field-group { display: flex; flex-direction: column; gap: 5px; }
+.field-group label { font-weight: 600; font-size: 0.85rem; color: #333; }
+.field-group input, .field-group select { padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; outline: none; }
+.btn-analyze { background: #3e2723; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 4px; }
+.btn-analyze:hover { background: #5d4037; }
+.soil-results { display: flex; flex-direction: column; gap: 20px; }
+.health-score-card { display: flex; align-items: center; gap: 20px; background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border-left: 5px solid; }
+.score-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; flex-shrink: 0; }
+.score-circle span { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+.score-circle small { font-size: 0.7rem; }
+.health-score-card h3 { font-size: 1.1rem; margin-bottom: 4px; }
+.health-score-card p { font-size: 0.85rem; color: #666; margin: 0; }
+.analysis-card, .rec-card, .crops-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.analysis-card h4, .rec-card h4, .crops-card h4 { color: #1b5e20; margin-bottom: 14px; }
+.issue-item { padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; }
+.issue-item.good { background: #e8f5e9; color: #2e7d32; }
+.issue-item.warning { background: #fff8e1; color: #f57f17; }
+.rec-item { padding: 10px 14px; background: #e3f2fd; border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; color: #1565c0; }
+.suitable-crops { display: flex; flex-wrap: wrap; gap: 8px; }
+.crop-tag { background: #e8f5e9; color: #1b5e20; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+@media (max-width: 768px) { .soil-layout { grid-template-columns: 1fr; padding: 16px; } }

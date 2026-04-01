@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import './Navbar.css';
 
 export default function Navbar({ setToken }) {
@@ -10,6 +11,7 @@ export default function Navbar({ setToken }) {
   const role = localStorage.getItem('role');
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { lang, setLang } = useLanguage();
   const dropdownRef = useRef(null);
 
   const logout = () => {
@@ -95,6 +97,9 @@ export default function Navbar({ setToken }) {
             <Link to="/register" className="btn-register" onClick={() => setMenuOpen(false)}>Register</Link>
           </div>
         )}
+        <button className="lang-toggle" onClick={() => setLang(lang === 'en' ? 'np' : 'en')}>
+          {lang === 'en' ? '🇳🇵 नेपाली' : '🇬🇧 English'}
+        </button>
       </div>
     </nav>
   );

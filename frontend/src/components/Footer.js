@@ -17,6 +17,10 @@ export default function Footer() {
           <Link to="/weather">Weather</Link>
           <Link to="/recommend">Crop Recommendation</Link>
           <Link to="/chat">AI Chatbot</Link>
+          <Link to="/fertilizer">Fertilizer Calculator</Link>
+          <Link to="/calendar">Crop Calendar</Link>
+          <Link to="/market">Market Prices</Link>
+          <Link to="/soil">Soil Health</Link>
         </div>
         <div className="footer-links">
           <h4>Account</h4>
@@ -37,6 +41,7 @@ export default function Footer() {
         <p>© 2026 Krishi Sahayak — BCA Final Year Project, Tribhuvan University Nepal</p>
         <p>Built with React, Flask, MySQL & AI</p>
       </div>
+
     </footer>
   );
 }

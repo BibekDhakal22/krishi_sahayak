@@ -1,0 +1,26 @@
+.market-page { padding: 0 0 40px; }
+.market-hero { background: linear-gradient(135deg, #1b5e20, #388e3c); color: white; padding: 40px; text-align: center; }
+.market-hero h2 { font-size: 2rem; margin-bottom: 8px; }
+.market-hero p { opacity: 0.9; margin-bottom: 4px; }
+.nepali { font-size: 0.9rem; opacity: 0.7; }
+.date-badge { display: inline-block; background: rgba(255,255,255,0.15); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; margin-top: 12px; }
+.market-controls { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; flex-wrap: wrap; gap: 12px; }
+.market-search { padding: 10px 16px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; width: 260px; outline: none; }
+.market-note { font-size: 0.85rem; color: #666; }
+.market-note a { color: #1b5e20; }
+.market-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; padding: 0 40px; }
+.price-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s; }
+.price-card:hover { transform: translateY(-4px); }
+.price-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.price-header h3 { font-size: 1rem; color: #1a1a1a; margin-bottom: 2px; }
+.nepali-name { font-size: 0.8rem; color: #888; }
+.trend-badge { font-size: 1.5rem; }
+.price-main { margin-bottom: 12px; }
+.price-avg { font-size: 1.8rem; font-weight: 800; color: #1b5e20; }
+.price-unit { font-size: 0.8rem; color: #888; margin-left: 4px; }
+.price-range { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.min-price, .max-price { font-size: 0.75rem; color: #666; white-space: nowrap; }
+.price-bar { flex: 1; height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; }
+.price-fill { height: 100%; background: linear-gradient(90deg, #1b5e20, #66bb6a); border-radius: 3px; }
+.market-name { font-size: 0.78rem; color: #999; }
+@media (max-width: 768px) { .market-grid { padding: 0 16px; } .market-controls { padding: 16px; } }
