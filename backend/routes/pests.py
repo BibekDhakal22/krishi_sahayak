@@ -1,27 +1,23 @@
 from flask import Blueprint, request, jsonify
+from database import get_db
 
 pests_bp = Blueprint('pests', __name__)
 
-def get_mysql():
-    from app import mysql
-    return mysql
-
 @pests_bp.route('/', methods=['GET'])
 def get_all_pests():
-    mysql = get_mysql()
     search = request.args.get('search')
-
     query = "SELECT * FROM pests WHERE 1=1"
     params = []
 
     if search:
-        query += " AND (name LIKE %s OR affected_crops LIKE %s OR nepali_name LIKE %s)"
+        query += " AND (name LIKE ? OR affected_crops LIKE ? OR nepali_name LIKE ?)"
         params.extend([f'%{search}%', f'%{search}%', f'%{search}%'])
 
-    cur = mysql.connection.cursor()
-    cur.execute(query, params)
-    rows = cur.fetchall()
-    cur.close()
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+    conn.close()
 
     pests = []
     for row in rows:

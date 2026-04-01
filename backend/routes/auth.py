@@ -1,18 +1,13 @@
 from flask import Blueprint, request, jsonify, current_app
-from flask_mysqldb import MySQL
+from database import get_db
 import bcrypt
 import jwt
 import datetime
 
 auth_bp = Blueprint('auth', __name__)
 
-def get_mysql():
-    from app import mysql
-    return mysql
-
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    mysql = get_mysql()
     data = request.get_json()
     name = data.get('name')
     email = data.get('email')
@@ -24,26 +19,29 @@ def register():
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     try:
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users (name, email, password) VALUES (%s, %s, %s)",
-                    (name, email, hashed.decode('utf-8')))
-        mysql.connection.commit()
-        cur.close()
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+            (name, email, hashed.decode('utf-8'))
+        )
+        conn.commit()
+        conn.close()
         return jsonify({'message': 'User registered successfully'}), 201
     except Exception as e:
         return jsonify({'error': 'Email already exists'}), 409
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    mysql = get_mysql()
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
 
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT id, name, email, password, role FROM users WHERE email=%s", (email,))
-    user = cur.fetchone()
-    cur.close()
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, email, password, role FROM users WHERE email=?", (email,))
+    user = cursor.fetchone()
+    conn.close()
 
     if user and bcrypt.checkpw(password.encode('utf-8'), user[3].encode('utf-8')):
         token = jwt.encode({
@@ -58,11 +56,9 @@ def login():
 
 @auth_bp.route('/change-password', methods=['POST'])
 def change_password():
-    mysql = get_mysql()
-    import jwt as pyjwt
     token = request.headers.get('Authorization', '').replace('Bearer ', '')
     try:
-        payload = pyjwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+        payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
         user_id = payload.get('user_id')
     except:
         return jsonify({'error': 'Unauthorized'}), 401
@@ -71,15 +67,17 @@ def change_password():
     current_password = data.get('current_password')
     new_password = data.get('new_password')
 
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT password FROM users WHERE id=%s", (user_id,))
-    user = cur.fetchone()
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT password FROM users WHERE id=?", (user_id,))
+    user = cursor.fetchone()
 
     if not user or not bcrypt.checkpw(current_password.encode('utf-8'), user[0].encode('utf-8')):
+        conn.close()
         return jsonify({'error': 'Current password is incorrect'}), 400
 
     hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-    cur.execute("UPDATE users SET password=%s WHERE id=%s", (hashed.decode('utf-8'), user_id))
-    mysql.connection.commit()
-    cur.close()
-    return jsonify({'message': 'Password changed successfully'}), 200   
+    cursor.execute("UPDATE users SET password=? WHERE id=?", (hashed.decode('utf-8'), user_id))
+    conn.commit()
+    conn.close()
+    return jsonify({'message': 'Password changed successfully'}), 200

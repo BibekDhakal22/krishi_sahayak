@@ -1,14 +1,10 @@
 from flask import Blueprint, request, jsonify
+from database import get_db
 
 crops_bp = Blueprint('crops', __name__)
 
-def get_mysql():
-    from app import mysql
-    return mysql
-
 @crops_bp.route('/', methods=['GET'])
 def get_all_crops():
-    mysql = get_mysql()
     season = request.args.get('season')
     region = request.args.get('region')
     search = request.args.get('search')
@@ -17,19 +13,20 @@ def get_all_crops():
     params = []
 
     if season:
-        query += " AND season=%s"
+        query += " AND season=?"
         params.append(season)
     if region:
-        query += " AND region LIKE %s"
+        query += " AND region LIKE ?"
         params.append(f'%{region}%')
     if search:
-        query += " AND (name LIKE %s OR nepali_name LIKE %s)"
+        query += " AND (name LIKE ? OR nepali_name LIKE ?)"
         params.extend([f'%{search}%', f'%{search}%'])
 
-    cur = mysql.connection.cursor()
-    cur.execute(query, params)
-    rows = cur.fetchall()
-    cur.close()
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+    conn.close()
 
     crops = []
     for row in rows:
@@ -43,11 +40,11 @@ def get_all_crops():
 
 @crops_bp.route('/<int:crop_id>', methods=['GET'])
 def get_crop(crop_id):
-    mysql = get_mysql()
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM crops WHERE id=%s", (crop_id,))
-    row = cur.fetchone()
-    cur.close()
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM crops WHERE id=?", (crop_id,))
+    row = cursor.fetchone()
+    conn.close()
 
     if not row:
         return jsonify({'error': 'Crop not found'}), 404

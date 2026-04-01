@@ -11,10 +11,24 @@ export default function Dashboard() {
   const [recentChats, setRecentChats] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/crops/').then(r => setStats(s => ({ ...s, crops: r.data.length })));
-    axios.get('http://localhost:5000/api/pests/').then(r => setStats(s => ({ ...s, pests: r.data.length })));
-    axios.get('http://localhost:5000/api/chat/history', { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => { setStats(s => ({ ...s, chats: r.data.length })); setRecentChats(r.data.slice(0, 3)); });
+    // Use public routes for crops and pests
+    axios.get('http://localhost:5000/api/crops/')
+      .then(r => setStats(s => ({ ...s, crops: r.data.length })))
+      .catch(() => {});
+
+    axios.get('http://localhost:5000/api/pests/')
+      .then(r => setStats(s => ({ ...s, pests: r.data.length })))
+      .catch(() => {});
+
+    // Chat history requires token
+    axios.get('http://localhost:5000/api/chat/history', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(r => {
+        setStats(s => ({ ...s, chats: r.data.length }));
+        setRecentChats(r.data.slice(0, 3));
+      })
+      .catch(() => {});
   }, []);
 
   const hour = new Date().getHours();

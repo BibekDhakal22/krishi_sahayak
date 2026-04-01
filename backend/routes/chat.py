@@ -1,13 +1,10 @@
 from flask import Blueprint, request, jsonify, current_app
 from groq import Groq
+from database import get_db
 import jwt
 import os
 
 chat_bp = Blueprint('chat', __name__)
-
-def get_mysql():
-    from app import mysql
-    return mysql
 
 def get_user_from_token(token):
     try:
@@ -18,7 +15,6 @@ def get_user_from_token(token):
 
 @chat_bp.route('/message', methods=['POST'])
 def send_message():
-    mysql = get_mysql()
     data = request.get_json()
     message = data.get('message')
     token = request.headers.get('Authorization', '').replace('Bearer ', '')
@@ -47,13 +43,14 @@ def send_message():
         ai_response = response.choices[0].message.content
 
         if user_id:
-            cur = mysql.connection.cursor()
-            cur.execute(
-                "INSERT INTO chat_history (user_id, message, response) VALUES (%s, %s, %s)",
+            conn = get_db()
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO chat_history (user_id, message, response) VALUES (?, ?, ?)",
                 (user_id, message, ai_response)
             )
-            mysql.connection.commit()
-            cur.close()
+            conn.commit()
+            conn.close()
 
         return jsonify({'response': ai_response}), 200
 
@@ -63,20 +60,20 @@ def send_message():
 
 @chat_bp.route('/history', methods=['GET'])
 def get_history():
-    mysql = get_mysql()
     token = request.headers.get('Authorization', '').replace('Bearer ', '')
     user_id = get_user_from_token(token)
 
     if not user_id:
         return jsonify({'error': 'Unauthorized'}), 401
 
-    cur = mysql.connection.cursor()
-    cur.execute(
-        "SELECT message, response, created_at FROM chat_history WHERE user_id=%s ORDER BY created_at DESC LIMIT 20",
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT TOP 20 message, response, created_at FROM chat_history WHERE user_id=? ORDER BY created_at DESC",
         (user_id,)
     )
-    rows = cur.fetchall()
-    cur.close()
+    rows = cursor.fetchall()
+    conn.close()
 
     history = [{'message': r[0], 'response': r[1], 'created_at': str(r[2])} for r in rows]
     return jsonify(history), 200
