@@ -1,117 +1,161 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './Home.css';
 
 function CountUp({ target, suffix = '' }) {
   const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const started = useRef(false);
+
   useEffect(() => {
-    let start = 0;
-    const step = Math.ceil(target / 60);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else setCount(start);
-    }, 30);
-    return () => clearInterval(timer);
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true;
+        let start = 0;
+        const step = Math.ceil(target / 50);
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else setCount(start);
+        }, 30);
+      }
+    });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
   }, [target]);
-  return <span>{count}{suffix}</span>;
+
+  return <span ref={ref}>{count}{suffix}</span>;
 }
+
+const features = [
+  { icon: '🌾', title: 'Crop Recommendation', desc: 'Smart algorithm matches crops to your region, season and soil type.', link: '/recommend', bg: '#e8f5e9' },
+  { icon: '🤖', title: 'AI Chatbot', desc: 'Ask any farming question in Nepali or English and get instant answers.', link: '/chat', bg: '#f3e5f5' },
+  { icon: '🌦️', title: 'Weather Advisory', desc: 'Real-time weather with farming tips for all Nepal districts.', link: '/weather', bg: '#e3f2fd' },
+  { icon: '🧪', title: 'Fertilizer Calculator', desc: 'Calculate exact fertilizer needs using Ropani, Bigha or Kattha.', link: '/fertilizer', bg: '#fff8e1' },
+  { icon: '🪱', title: 'Soil Health Checker', desc: 'Analyze soil pH, nitrogen and nutrients for better yields.', link: '/soil', bg: '#fce4ec' },
+  { icon: '💰', title: 'Market Prices', desc: 'Daily crop prices from Kalimati market to sell at the right time.', link: '/market', bg: '#e0f7fa' },
+  { icon: '📅', title: 'Crop Calendar', desc: 'Monthly planting and harvesting schedule for Nepal crops.', link: '/calendar', bg: '#f1f8e9' },
+  { icon: '🐛', title: 'Pest & Disease Guide', desc: 'Identify and treat common pests and diseases affecting your crops.', link: '/pests', bg: '#fff3e0' },
+  { icon: '🌱', title: 'Crop Advisory', desc: 'Detailed fertilizer, water and care tips for Nepal major crops.', link: '/crops', bg: '#e8f5e9' },
+];
 
 export default function Home() {
   const token = localStorage.getItem('token');
   const name = localStorage.getItem('name');
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => setVisible(true), 100);
-  }, []);
+  useEffect(() => { setTimeout(() => setVisible(true), 50); }, []);
 
   return (
     <div className="home">
       {/* HERO */}
-      <div className={`hero ${visible ? 'hero-visible' : ''}`}>
+      <section className={`hero ${visible ? 'hero-in' : ''}`}>
         <div className="hero-content">
-          <div className="hero-badge">🇳🇵 Made for Nepal</div>
-          <h1>Smart Farming<br /><span className="hero-highlight">Starts Here</span></h1>
-          <p>AI-powered agriculture assistant helping Nepali farmers grow better crops, fight pests, and make smarter decisions.</p>
-          <p className="nepali">नेपाली किसानहरूको लागि स्मार्ट कृषि सहायक</p>
-          <div className="hero-btns">
+          <div className="hero-badge">
+            <span className="badge-dot"></span>
+            🇳🇵 Built for Nepal's Farmers
+          </div>
+          <h1>
+            Smart Farming<br />
+            <span className="hero-gradient">Starts Here</span>
+          </h1>
+          <p className="hero-desc">
+            AI-powered agriculture assistant helping Nepali farmers grow better crops,
+            fight pests, and make smarter decisions — in Nepali or English.
+          </p>
+          <p className="hero-nepali">नेपाली किसानहरूको लागि स्मार्ट कृषि सहायक</p>
+          <div className="hero-actions">
             {token ? (
               <>
-                <Link to="/recommend" className="btn-primary">🌾 Get Crop Recommendations</Link>
-                <Link to="/chat" className="btn-secondary">🤖 Ask AI Assistant</Link>
+                <Link to="/recommend" className="btn-hero-primary">🌾 Get Crop Recommendations</Link>
+                <Link to="/chat" className="btn-hero-secondary">🤖 Ask AI Assistant</Link>
               </>
             ) : (
               <>
-                <Link to="/register" className="btn-primary">🚀 Get Started Free</Link>
-                <Link to="/crops" className="btn-secondary">🌱 Browse Crops</Link>
+                <Link to="/register" className="btn-hero-primary">🚀 Get Started Free</Link>
+                <Link to="/crops" className="btn-hero-secondary">🌱 Explore Crops</Link>
               </>
             )}
           </div>
-          {token && <p className="welcome-back">👋 Welcome back, <strong>{name}</strong>!</p>}
+          {token && <p className="hero-welcome">👋 Welcome back, <strong>{name}</strong>!</p>}
         </div>
-        <div className="hero-image">
-          <div className="hero-illustration">
-            <div className="circle c1">🌾</div>
-            <div className="circle c2">🌱</div>
-            <div className="circle c3">🤖</div>
-            <div className="circle c4">🌦️</div>
-            <div className="circle c5">🐛</div>
-            <div className="main-circle">🏔️</div>
+        <div className="hero-visual">
+          <div className="visual-ring ring-outer">
+            {['🌾','🌿','🍅','🥔','🌽','🌻'].map((e, i) => (
+              <div key={i} className="ring-item" style={{ '--i': i, '--total': 6 }}>{e}</div>
+            ))}
           </div>
+          <div className="visual-ring ring-inner">
+            {['🤖','🌦️','💰','🪱'].map((e, i) => (
+              <div key={i} className="ring-item" style={{ '--i': i, '--total': 4 }}>{e}</div>
+            ))}
+          </div>
+          <div className="visual-center">🏔️</div>
         </div>
-      </div>
+      </section>
 
       {/* STATS */}
-      <div className="stats-bar">
-        <div className="stat-item">
-          <strong><CountUp target={10} />+</strong>
-          <span>Crops in Database</span>
-        </div>
-        <div className="stat-item">
-          <strong><CountUp target={4} />+</strong>
-          <span>Pest & Diseases</span>
-        </div>
-        <div className="stat-item">
-          <strong><CountUp target={15} />+</strong>
-          <span>Nepal Districts</span>
-        </div>
-        <div className="stat-item">
-          <strong><CountUp target={24} />/7</strong>
-          <span>AI Assistant</span>
-        </div>
-      </div>
+      <section className="stats-section">
+        {[
+          { label: 'Crops in Database', target: 10, suffix: '+', icon: '🌱' },
+          { label: 'Pest Records', target: 4, suffix: '+', icon: '🐛' },
+          { label: 'Nepal Districts', target: 15, suffix: '+', icon: '📍' },
+          { label: 'AI Available', target: 24, suffix: '/7', icon: '🤖' },
+        ].map((s, i) => (
+          <div key={i} className="stat-card">
+            <span className="stat-icon">{s.icon}</span>
+            <strong className="stat-num"><CountUp target={s.target} suffix={s.suffix} /></strong>
+            <span className="stat-label">{s.label}</span>
+          </div>
+        ))}
+      </section>
 
       {/* FEATURES */}
-      <div className="features-section">
-        <h2>Everything a Nepali Farmer Needs</h2>
-        <p className="section-sub">All tools in one place — free and easy to use</p>
+      <section className="features-section">
+        <div className="section-header">
+          <h2>Everything a Nepali Farmer Needs</h2>
+          <p>9 powerful tools — all free, all in one place</p>
+        </div>
         <div className="features-grid">
-          {[
-            { icon: '🌱', title: 'Crop Advisory', desc: 'Get fertilizer, water and care tips for Nepal\'s major crops including Rice, Wheat, Maize and more.', link: '/crops', color: '#e8f5e9' },
-            { icon: '🌾', title: 'Crop Recommendation', desc: 'Enter your region, season and soil type — our algorithm suggests the best crops for your land.', link: '/recommend', color: '#fff8e1' },
-            { icon: '🐛', title: 'Pest & Disease Guide', desc: 'Identify common pests and diseases affecting your crops and get treatment advice.', link: '/pests', color: '#fce4ec' },
-            { icon: '🌦️', title: 'Weather Advisory', desc: 'Real-time weather for Nepal districts with farming tips based on current conditions.', link: '/weather', color: '#e3f2fd' },
-            { icon: '🤖', title: 'AI Chatbot', desc: 'Ask any farming question in Nepali or English and get instant expert advice.', link: '/chat', color: '#f3e5f5' },
-            { icon: '💬', title: 'Chat History', desc: 'Review your past conversations with the AI assistant anytime you need.', link: '/history', color: '#e0f7fa' },
-          ].map((f, i) => (
-            <Link to={f.link} key={i} className="feature-card" style={{ background: f.color }}>
-              <span className="feature-icon">{f.icon}</span>
+          {features.map((f, i) => (
+            <Link to={f.link} key={i} className="feature-card" style={{ '--card-bg': f.bg }}>
+              <div className="feature-icon-wrap">{f.icon}</div>
               <h3>{f.title}</h3>
               <p>{f.desc}</p>
-              <span className="feature-link">Learn more →</span>
+              <span className="feature-arrow">→</span>
             </Link>
           ))}
         </div>
-      </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="how-section">
+        <div className="section-header light">
+          <h2>How It Works</h2>
+          <p>Get started in 3 simple steps</p>
+        </div>
+        <div className="steps">
+          {[
+            { num: '01', title: 'Create Account', desc: 'Register for free in seconds with just your name and email.' },
+            { num: '02', title: 'Enter Your Details', desc: 'Tell us your region, season and soil type for personalized advice.' },
+            { num: '03', title: 'Get Smart Advice', desc: 'Receive AI-powered recommendations, weather tips and market prices.' },
+          ].map((s, i) => (
+            <div key={i} className="step-card">
+              <div className="step-num">{s.num}</div>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* CTA */}
       {!token && (
-        <div className="cta-section">
+        <section className="cta-section">
           <h2>Ready to Farm Smarter?</h2>
-          <p>Join thousands of Nepali farmers using Krishi Sahayak</p>
+          <p>Join Krishi Sahayak — free forever for Nepali farmers</p>
           <Link to="/register" className="btn-cta">Create Free Account →</Link>
-        </div>
+        </section>
       )}
     </div>
   );
