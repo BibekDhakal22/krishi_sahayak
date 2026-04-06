@@ -79,6 +79,9 @@ export default function Navbar({ setToken }) {
                 <Link to="/history" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
                   💬 Chat History
                 </Link>
+                <Link to="/forum" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                  👨‍🌾 Community Forum
+                </Link>
                 {role === 'admin' && (
                   <Link to="/admin" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
                     ⚙️ Admin Panel

@@ -21,6 +21,10 @@ export default function Footer() {
           <Link to="/calendar">Crop Calendar</Link>
           <Link to="/market">Market Prices</Link>
           <Link to="/soil">Soil Health</Link>
+          <Link to="/irrigation">Irrigation Calculator</Link>
+          <Link to="/schemes">Govt Schemes</Link>
+          <Link to="/disease">Disease Detection</Link>
+          <Link to="/forum">Community Forum</Link>
         </div>
         <div className="footer-links">
           <h4>Account</h4>

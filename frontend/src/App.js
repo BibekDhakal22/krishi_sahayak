@@ -21,6 +21,10 @@ import FertilizerCalc from './pages/FertilizerCalc';
 import CropCalendar from './pages/CropCalendar';
 import MarketPrice from './pages/MarketPrice';
 import SoilChecker from './pages/SoilChecker';
+import IrrigationCalc from './pages/IrrigationCalc';
+import GovSchemes from './pages/GovSchemes';
+import DiseaseDetect from './pages/DiseaseDetect';
+import Forum from './pages/Forum';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -48,6 +52,10 @@ function App() {
           <Route path="/profile" element={token ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/admin" element={token ? <Admin /> : <Navigate to="/login" />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/irrigation" element={<IrrigationCalc />} />
+          <Route path="/schemes" element={<GovSchemes />} />
+          <Route path="/disease" element={token ? <DiseaseDetect /> : <Navigate to="/login" />} />
+          <Route path="/forum" element={<Forum />} />
         </Routes>
         <Footer />
       </BrowserRouter>

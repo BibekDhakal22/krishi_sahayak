@@ -17,7 +17,11 @@ from routes.chat import chat_bp
 from routes.weather import weather_bp
 from routes.admin import admin_bp
 from routes.recommend import recommend_bp
+from routes.disease import disease_bp
+from routes.forum import forum_bp
 
+app.register_blueprint(forum_bp, url_prefix='/api/forum')
+app.register_blueprint(disease_bp, url_prefix='/api/disease')
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(crops_bp, url_prefix='/api/crops')
 app.register_blueprint(pests_bp, url_prefix='/api/pests')
