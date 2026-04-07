@@ -18,6 +18,7 @@ def analyze_disease():
     token = request.headers.get('Authorization', '').replace('Bearer ', '')
     data = request.get_json()
     image_b64 = data.get('image')
+    mime_type = data.get('mime_type', 'image/jpeg')
 
     if not image_b64:
         return jsonify({'error': 'No image provided'}), 400
@@ -34,7 +35,8 @@ def analyze_disease():
                         {
                             "type": "image_url",
                             "image_url": {
-                                "url": f"data:image/jpeg;base64,{image_b64}"
+                                "url": f"data:{mime_type};base64,{image_b64}",
+"detail": "high"
                             }
                         },
                         {
@@ -61,7 +63,20 @@ def analyze_disease():
 
         import json
         text = response.choices[0].message.content
-        text = text.replace('```json', '').replace('```', '').strip()
+        text = text.strip()
+
+        # Remove markdown code blocks
+        if '```json' in text:
+            text = text.split('```json')[1].split('```')[0].strip()
+        elif '```' in text:
+            text = text.split('```')[1].split('```')[0].strip()
+
+        # Extract JSON object from response
+        start = text.find('{')
+        end = text.rfind('}') + 1
+        if start != -1 and end > start:
+            text = text[start:end]
+
         result = json.loads(text)
         return jsonify(result), 200
 

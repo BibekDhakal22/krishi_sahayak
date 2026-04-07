@@ -37,10 +37,12 @@ export default function DiseaseDetect() {
 
     const reader = new FileReader();
     reader.onload = async () => {
-      const base64 = reader.result.split(',')[1];
+      const fullResult = reader.result;
+      const base64 = fullResult.split(',')[1];
+      const mimeType = fullResult.split(';')[0].split(':')[1];
       try {
         const res = await axios.post('http://localhost:5000/api/disease/analyze',
-          { image: base64, filename: image.name },
+          { image: base64, mime_type: mimeType, filename: image.name },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setResult(res.data);
